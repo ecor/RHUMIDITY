@@ -1,0 +1,35 @@
+
+ if(medie_K_sulle_sta)
+{
+ coeff_regr<-read.table("coeff_regr_lin_K.medio.txt") # contiene i casi "p" e "np"
+ interc[umid.g$Prec<soglia_pioggia]<-coeff_regr$interc[1]
+ c.a.[umid.g$Prec<soglia_pioggia]<-coeff_regr$coeff.ang[1]
+ interc[umid.g$Prec>=soglia_pioggia]<-coeff_regr$interc[2]
+ c.a.[umid.g$Prec>=soglia_pioggia]<-coeff_regr$coeff.ang[2]
+ Td_corretto_FAO<-umid.g$Tn - (interc + c.a.*umid.g$i_sicc)		# lineare. interc e c.a. vengono dalla proced. "confronta bilancio..."
+} else  # K individuale (in questo caso le matrici sono distinte perch� ognuna contiene tutti i valori diversi per ogni stazione)
+{
+ coeff_regr_np<-read.table("coeff_regr_lin_K.individ_np.txt")
+ coeff_regr_p<-read.table("coeff_regr_lin_K.individ_p.txt")
+ interc[umid.g$Prec<soglia_pioggia]<-coeff_regr_np$interc[row.names(coeff_regr_np)==st]
+ c.a.[umid.g$Prec<soglia_pioggia]<-coeff_regr_np$coeff.ang[row.names(coeff_regr_np)==st]
+ interc[umid.g$Prec>=soglia_pioggia]<-coeff_regr_p$interc[row.names(coeff_regr_p)==st]
+ c.a.[umid.g$Prec>=soglia_pioggia]<-coeff_regr_p$coeff.ang[row.names(coeff_regr_p)==st]
+ Td_corretto_FAO<-umid.g$Tn - (interc + c.a.*umid.g$i_sicc)		# lineare. interc e c.a. vengono dalla proced. "confronta bilancio..."
+}
+
+ # calcola i valori di URx con i Td corretti FAO
+ es<-6.1078*exp(17.269*umid.g$Tn/(umid.g$Tn+237.3))  
+ e_corr.2<-6.1078*exp(17.269*Td_corretto_FAO/(Td_corretto_FAO+237.3))
+ URx_sim_corr.2<-e_corr.2/es*100
+
+# calcolo dell'umid. minima simulata corretta FAO (si calcola la "e" in corrisp. di URmax, quindi la saturazione con la Tx e infine URn (simulata)
+ es_x<-6.1078*exp(17.269*umid.g$Tx/(umid.g$Tx+237.3))  	# saturazione quando T=Tx
+ e_corr.2<-URx_sim_corr.2/100*es   				# ipotesi di correzione (URx_sim<=100)
+ URn_sim_corr.2<-e_corr.2/es_x*100
+
+nome_file<-paste("umid.corr.2_g_", st, tipo_medie_K,".csv", sep="")
+write.table(data.frame(umid.g,Td_corr_FAO= Td_corretto_FAO, URx_sim_corr.2= URx_sim_corr.2,  URn_sim_corr.2= URn_sim_corr.2), nome_file, quote=F, row.names=F )
+
+}
+

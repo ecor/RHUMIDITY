@@ -1,0 +1,22 @@
+Package: RHUMIDITY
+Maintainer: Emanuele Cordano <emanuele.cordano@gmail.com>
+License: GPL (>= 2)
+Title: RHUMIDITY (... calculates hourly air humidity time series from RMAWGEN
+    simulations!!)
+Type: Package
+Author: Emanuele Cordano, Emanuele Eccel
+Description: This package contains tools to estimate air humidity from
+    temperature and precipitation measures for modeling applications.
+    Bugs/comments/questions/collaboration of any kind are warmly welcomed.
+Version: 1.0
+Repository: CRAN (NOT YET)
+Date: 2013-04-08
+Depends:
+    R (>= 2.10),
+    zoo
+Suggests:
+    RMAWGEN,Interpol.T
+URL:
+    http://cri.gmpf.eu/Research/Sustainable-Agro-Ecosystems-and-Bioresources/Dynamics-in-the-agro-ecosystems
+    http://www.fao.org/docrep/X0490E/x0490e07.htm#estimating%20missing\%20climatic%20data,
+    http://onlinelibrary.wiley.com/doi/10.1002/met.258/abstract
